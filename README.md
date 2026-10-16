@@ -1,7 +1,9 @@
 # Transformers-gitan
 
 Un Transformer encodeur-décodeur codé from scratch (PyTorch) qui répond comme Homer Simpson.
-Tout est dans le notebook `.ipynb`.
+Tout est dans `notebook.ipynb`.
+
+[![Ouvrir dans Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Pacotiber/Transformers-gitan/blob/master/notebook.ipynb)
 
 ## Installation
 
