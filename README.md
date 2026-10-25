@@ -1,30 +1,35 @@
-# Transformers-gitan
+# Transformers-Homer
 
-Un Transformer encodeur-décodeur codé de zéro avec PyTorch, entraîné pour répondre comme Homer Simpson, en
-français. Tout le code est dans `notebook.ipynb`.
+Un transformer entraîné pour parler comme Homer Simpson. C'est-à-dire beaucoup de bêtises et de donuts.
 
-[![Ouvrir dans Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Pacotiber/Transformers-gitan/blob/master/notebook.ipynb)
 
-## Comment ça marche
+## Réglages :
 
-Le modèle est d'abord pré-entraîné sur des sous-titres de films et de séries, pour apprendre à répondre à une
-réplique en français, puis affiné sur les dialogues des Simpsons pour prendre le style d'Homer. On lui écrit
-ensuite une phrase comme si on était Marge, et il répond.
+Le modèle a 11,1 millions de paramètres avec une taille d'embedding de 256.
+Il utilise le tokenizer de tiktoken.
+J'ai d'abord commencé avec un très gros modèle d'environ 100 millions de paramètres.
+Les résultats étaient très mauvais : le modèle parlait à peine français.
+J'ai donc diminué le nombre de paramètres.
 
-L'entraînement se fait sur Google Colab avec un GPU T4 : il suffit d'ouvrir le notebook avec le bouton
-ci-dessus et de tout exécuter. Les modèles sont sauvegardés dans Google Drive.
+Au départ, le modèle avait trois tables qui faisaient le même travail :
+- `encoder.token_embedding_table` (token -> vecteur) ;
+- `decoder.token_embedding_table` (token -> vecteur, pour les mêmes tokens) ;
+- `decoder.lm_head` (vecteur -> score de chaque token, le chemin inverse).
 
-## Installation en local
+J'ai donc tout mis en commun. J'ai aussi diminué la taille des embeddings.
 
-```bash
-uv sync
-```
+## Dataset :
 
-## Données
+Le dataset de pré-entraînement est un dataset de sous-titres de films trouvé sur Hugging Face : https://huggingface.co/datasets/sentence-transformers/parallel-sentences-opensubtitles.
+Le dataset de fine-tuning a aussi été récupéré sur Hugging Face. Il s'agit de toutes les répliques de centaines d'épisodes des Simpsons, sous la forme : `Marge: ... Homer: ... Bart: ...`
 
-Le notebook télécharge lui-même ce dont il a besoin dans `data/` :
+## Comment ça marche :
 
-- les dialogues des Simpsons, depuis le dataset Hugging Face [Romaindcrl/Simpsons](https://huggingface.co/datasets/Romaindcrl/Simpsons) ;
-- environ 200 Mo de sous-titres français du corpus OpenSubtitles ([OPUS](https://opus.nlpl.eu/)), pour le pré-entraînement.
+Pour un résultat un peu plus concluant, le modèle est d'abord pré-entraîné sur des sous-titres de films et de séries pour apprendre à répondre à des questions en français. Ensuite, il est fine-tuné sur les répliques d'Homer pour essayer d'avoir son style.
+Pour le tester, on lui envoie une phrase qui commence par « Marge: » pour que le modèle comprenne à qui il s'adresse. Puis on l'appelle en commençant sa réponse par « Homer: » pour qu'il comprenne qu'il doit répondre comme Homer. Il pourrait tout à fait répondre comme un autre personnage des Simpsons.
+L'entraînement s'est fait sur Google Colab avec un GPU T4.
 
-Ni les données ni les modèles entraînés (`*.pt`) ne sont versionnés, ils sont trop gros pour GitHub.
+## Résultat :
+
+Bien que le résultat ne soit pas super concluant, il reste quand même intéressant.
+Le modèle arrive à faire des phrases, même si elles ne sont pas super logiques. Sur certains outputs, on reconnaît aussi le style d'Homer.
