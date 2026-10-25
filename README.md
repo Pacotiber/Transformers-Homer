@@ -32,4 +32,9 @@ L'entraînement s'est fait sur Google Colab avec un GPU T4.
 ## Résultat :
 
 Bien que le résultat ne soit pas super concluant, il reste quand même intéressant.
-Le modèle arrive à faire des phrases, même si elles ne sont pas super logiques. Sur certains outputs, on reconnaît aussi le style d'Homer.
+Le modèle arrive à faire des phrases, même si elles ne sont pas super logiques. Sur certains outputs, on reconnaît aussi le style d'Homer (le modèle a écrit "pitite" ou "Pit être" ça m'a fait rire). Exemple réel :
+
+Marge: pourquoi ?
+Homer: Pit-être qu'il veut se passer.
+
+Avec les moyens que j'ai eu pour entrainer le modèle je suis quand même content du résultats.
